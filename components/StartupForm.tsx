@@ -7,15 +7,17 @@ import MDEditor from '@uiw/react-md-editor'
 import { Button } from "./ui/button"
 import { z } from 'zod'
 import { Send, SendIcon } from "lucide-react"
-import { error } from "console"
 import { formSchema } from "@/lib/validation"
 import { useToast } from "@/hooks/use-toast"
+import { useRouter } from "next/navigation"
+import { createPitch } from "@/lib/actions"
 
 const StartupForm = () => {
 
     const [errors, setErrors] = useState<Record<string, string>>({})
     const [pitch, setPitch] = useState("")
-    // const { toast } = useToast
+    const { toast } = useToast()
+    const router = useRouter()
 
     const handleFormSubmit = async (prevState: any, formData: FormData) => {
         try {
@@ -29,18 +31,41 @@ const StartupForm = () => {
 
             await formSchema.parseAsync(formValues);
 
-            console.log(formValues)
-            // const result = await createIdea(prevState, formData, pitch)
+            const result = await createPitch(prevState, formData, pitch)
 
-            // console.log(result)
+            if (result?.status == 'SUCCESS') {
+                toast({
+                    title: 'Success',
+                    description: 'Your startup pitch has been published',
+                })
+                router.push(`/startup/${result?._id}`)
+            }
+
+            return result;
+
         } catch (error) {
             if (error instanceof z.ZodError) {
                 const fieldErrors = error.flatten().fieldErrors;
 
                 setErrors(fieldErrors as unknown as Record<string, string>)
+                toast({
+                    title: 'Error',
+                    description: 'Please check your inputs and try again',
+                    variant: 'destructive'
+                })
+
+                return { ...prevState, error: "Validation Failed", status: "ERROR" }
             }
 
-        } finally {
+            toast({
+                title: 'Error',
+                description: 'An unexpected error has occurred',
+                variant: 'destructive'
+            })
+
+            return {
+                ...prevState, error: "Unexpected Error has occurred", status: "ERROR"
+            }
 
         }
     };
