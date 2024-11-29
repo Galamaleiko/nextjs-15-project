@@ -10,3 +10,5 @@ This project is created via JSMastery NEXT.JS 15 Crash Course, for educational p
 - TailwindCSS
 - ShadCN
 - TypeScript
+
+By Serhii Babiichuk
