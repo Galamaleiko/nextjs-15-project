@@ -14,19 +14,20 @@ export const createPitch = async (state: any, form: FormData, pitch: string) => 
             status: 'ERROR'
         })
 
-    const { title, description, category, link } = Object.fromEntries(
+    // const { title, description, category, link } = Object.fromEntries(
+    const data = Object.fromEntries(
         Array.from(form).filter(([key]) => key !== pitch)
     )
 
-    const slug = slugify(title as string, { lower: true, strict: true })
+    const slug = slugify(data.title as string, { lower: true, strict: true })
 
     try {
         const startup = {
-            title,
-            description,
-            category,
+            title: data.title,
+            description: data.description,
+            category: data.category,
             views: 0,
-            image: link,
+            image: data.link,
             slug: {
                 _type: slug,
                 current: slug,
@@ -49,7 +50,8 @@ export const createPitch = async (state: any, form: FormData, pitch: string) => 
 
         return parseServerActionResponse({
             error: JSON.stringify(error),
-            status: "ERROR"
+            status: "ERROR",
+            data: data
         })
     }
 }

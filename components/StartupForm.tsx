@@ -5,12 +5,14 @@ import { Input } from "./ui/input"
 import { Textarea } from "./ui/textarea"
 import MDEditor from '@uiw/react-md-editor'
 import { Button } from "./ui/button"
-import { z } from 'zod'
-import { Send, SendIcon } from "lucide-react"
+import { object, z } from 'zod'
+import { Send } from "lucide-react"
 import { formSchema } from "@/lib/validation"
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
 import { createPitch } from "@/lib/actions"
+import { startup } from "@/sanity/schemaTypes/startup"
+import { StartupCardType } from "./StartupCard"
 
 const StartupForm = () => {
 
@@ -54,7 +56,7 @@ const StartupForm = () => {
                     variant: 'destructive'
                 })
 
-                return { ...prevState, error: "Validation Failed", status: "ERROR" }
+                return { data: Object.fromEntries(formData), error: "Validation Failed", status: "ERROR" }
             }
 
             toast({
@@ -64,13 +66,22 @@ const StartupForm = () => {
             })
 
             return {
-                ...prevState, error: "Unexpected Error has occurred", status: "ERROR"
+                data: Object.fromEntries(formData), error: "Unexpected Error has occurred", status: "ERROR"
             }
 
         }
     };
-    const [state, formAction, isPending] = useActionState(handleFormSubmit, { error: "", status: "INITIAL" })
 
+    const [state, formAction, isPending] = useActionState(handleFormSubmit, {
+        data: {
+            title: '',
+            description: '',
+            category: '',
+            link: ''
+        },
+        error: "",
+        status: "INITIAL"
+    })
 
     return (<>
         <form action={formAction} className="startup-form">
@@ -78,28 +89,28 @@ const StartupForm = () => {
                 <label htmlFor="title" className="startup-form_label">
                     Title
                 </label>
-                <Input id="title" name="title" className="startup-form_input" required placeholder="Startup Title" />
+                <Input id="title" name="title" defaultValue={state.data?.title || undefined} className="startup-form_input" required placeholder="Startup Title" />
 
                 {errors.title && <p className="startup-form_error">{errors.title}</p>}
             </div>
 
             <div>
                 <label htmlFor="description" className="startup-form_label">Description</label>
-                <Textarea id="description" name="description" className="startup-form_textarea" required placeholder="Startup Description" />
+                <Textarea id="description" name="description" defaultValue={state.data?.description || undefined} className="startup-form_textarea" required placeholder="Startup Description" />
 
                 {errors.description && <p className="startup-form_error">{errors.description}</p>}
             </div>
 
             <div>
                 <label htmlFor="category" className="startup-form_label">Category</label>
-                <Input id="category" name="category" className="startup-form_input" required placeholder="Startup Category (Tech, Health, Education ...)" />
+                <Input id="category" name="category" defaultValue={state.data?.category || undefined} className="startup-form_input" required placeholder="Startup Category (Tech, Health, Education ...)" />
 
                 {errors.category && <p className="startup-form_error">{errors.category}</p>}
             </div>
 
             <div>
                 <label htmlFor="link" className="startup-form_label">Image URL</label>
-                <Input id="link" name="link" className="startup-form_input" required placeholder="Startup Image URL" />
+                <Input id="link" name="link" defaultValue={state.data?.link || undefined} className="startup-form_input" required placeholder="Startup Image URL" />
 
                 {errors.link && <p className="startup-form_error">{errors.link}</p>}
             </div>
