@@ -1,4 +1,5 @@
 import Navbar from "../../components/Navbar";
+import { Analytics } from "@vercel/analytics/react"
 
 export default function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
     return (
@@ -6,6 +7,8 @@ export default function Layout({ children }: Readonly<{ children: React.ReactNod
             <Navbar/>
 
             {children}
+
+            <Analytics />
         </main>
     )
 }
