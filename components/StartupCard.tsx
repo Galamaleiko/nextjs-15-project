@@ -30,7 +30,7 @@ const StartupCard = ({ post }: { post: StartupCardType }) => {
             <div className='flex-between mt-5 gap-5'>
                 <div className='flex-1'>
                     <Link href={`/user/${author?._id}`}>
-                        <p className='text-16-medium line-clamp-1'>
+                        <p className='text-16-medium line-clamp-1 hover:font-bold '>
                             {author?.name}
                         </p>
                     </Link>
@@ -43,7 +43,7 @@ const StartupCard = ({ post }: { post: StartupCardType }) => {
                 </div>
 
                 <Link href={`/user/${author?._id}`}>
-                    <Image src={author?.image} alt='User' width={48} height={48} className='rounded-full' />
+                    <Image src={author?.image} alt='User' width={48} height={48} className='rounded-full hover:border-4 hover:border-primary' />
                 </Link>
             </div>
 
@@ -57,7 +57,7 @@ const StartupCard = ({ post }: { post: StartupCardType }) => {
 
             <div className='flex-between gap-3 mt-5'>
                 <Link href={`/?query=${category?.toLowerCase()}`}>
-                    <p className='text-16-medium'>
+                    <p className='text-16-medium hover:font-bold'>
                         {category}
                     </p>
                 </Link>
