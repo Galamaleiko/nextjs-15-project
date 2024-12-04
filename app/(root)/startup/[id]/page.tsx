@@ -50,10 +50,10 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
 
                     <Link href={`/user/${post.author?._id}`} className='flex gap-2 items-center mb-3'>
 
-                        <Image src={post.author?.image} alt='avatar' width={64} height={64} className='rounded-full drop-shadow-lg' />
+                        <Image src={post.author?.image} alt='avatar' width={64} height={64} className='rounded-full drop-shadow-lg hover:border-4 hover:border-primary' />
 
-                        <div>
-                            <p className='text-20-medium'>
+                        <div className=''>
+                            <p className='text-20-medium hover:font-bold'>
                                 {post.author?.name}
                             </p>
                             <p className='text-16-medium !text-black-300'>
