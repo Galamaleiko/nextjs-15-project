@@ -149,7 +149,7 @@
     }
 
     .startup-card_btn {
-        @apply rounded-full bg-black-200 font-medium text-[16px] text-white px-5 py-3 hover:bg-white hover:text-black !important;
+       @apply relative z-0 overflow-hidden rounded-full border-2 border-black bg-black px-5 py-3 hover:text-black text-[16px] font-medium text-white transition-colors before:absolute before:left-0 before:top-0 before:-z-10 before:h-full before:w-full before:bg-origin-border before:scale-y-0 before:bg-white before:transition-transform before:duration-300 before:content-[''] before:hover:scale-y-100 !important
     }
 
     .startup-card_skeleton {
